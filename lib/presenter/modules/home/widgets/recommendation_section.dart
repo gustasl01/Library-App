@@ -9,16 +9,19 @@ class RecommendationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<BookEntity> recommendations = [
       BookEntity(
+        id: 'book-2',
         title: 'Shine',
         author: 'JESSICA JUNG',
         coverColor: '0xFFFDD835',
       ),
       BookEntity(
+        id: 'book-3',
         title: 'Shatter Me',
         author: 'Author Name',
         coverColor: '0xFF3B82F6',
       ),
       BookEntity(
+        id: 'book-4',
         title: 'Psychology of Money',
         author: 'MORGAN HOUSEL',
         coverColor: '0xFFE5E7EB',

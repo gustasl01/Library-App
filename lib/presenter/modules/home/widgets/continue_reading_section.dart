@@ -44,6 +44,7 @@ class _ContinueReadingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final book = BookEntity(
+      id: 'book-1',
       title: 'The Weight of Things',
       author: 'Terellye',
       coverColor: '0xFF1E3A8A',

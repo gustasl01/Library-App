@@ -7,14 +7,14 @@ class PopularTagsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<TagEntity> tags = [
-      TagEntity(name: 'Adventure', isHighlighted: true),
-      TagEntity(name: 'Action'),
-      TagEntity(name: 'Romance', isHighlighted: true),
-      TagEntity(name: 'Future'),
-      TagEntity(name: 'Horor'),
-      TagEntity(name: 'Comedy'),
-      TagEntity(name: 'Detective'),
-      TagEntity(name: 'School', isHighlighted: true),
+      TagEntity(id: 'tag-1', name: 'Adventure', isHighlighted: true),
+      TagEntity(id: 'tag-2', name: 'Action'),
+      TagEntity(id: 'tag-3', name: 'Romance', isHighlighted: true),
+      TagEntity(id: 'tag-4', name: 'Future'),
+      TagEntity(id: 'tag-5', name: 'Horor'),
+      TagEntity(id: 'tag-6', name: 'Comedy'),
+      TagEntity(id: 'tag-7', name: 'Detective'),
+      TagEntity(id: 'tag-8', name: 'School', isHighlighted: true),
     ];
 
     return Padding(

@@ -9,31 +9,37 @@ class TopBookSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<BookEntity> books = [
       BookEntity(
+        id: 'book-5',
         title: 'Si Anak Badai',
         author: 'By Terellye',
         coverColor: '0xFF1E3A8A',
       ),
       BookEntity(
+        id: 'book-6',
         title: 'The Phycology Of Money',
         author: 'By Howard',
         coverColor: '0xFFE5E7EB',
       ),
       BookEntity(
+        id: 'book-7',
         title: 'Shine',
         author: 'By Jessica',
         coverColor: '0xFFFDD835',
       ),
       BookEntity(
+        id: 'book-8',
         title: 'Get Well Soon Heart',
         author: 'By Deedain',
         coverColor: '0xFFFEE2E2',
       ),
       BookEntity(
+        id: 'book-9',
         title: 'Coraline',
         author: 'Neil Gaiman',
         coverColor: '0xFF6B21A8',
       ),
       BookEntity(
+        id: 'book-10',
         title: 'Summer To Remember',
         author: 'By suzatthefirst',
         coverColor: '0xFF3B82F6',

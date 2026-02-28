@@ -10,6 +10,7 @@ class BookmarksPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<BookEntity> favoriteBooks = [
       BookEntity(
+        id: 'book-1',
         title: 'The Weight of Things',
         author: 'Terellye',
         coverColor: '0xFF1E3A8A',
@@ -18,36 +19,43 @@ class BookmarksPage extends StatelessWidget {
         progress: 0.5,
       ),
       BookEntity(
+        id: 'book-2',
         title: 'Shine',
         author: 'Jessica Jung',
         coverColor: '0xFFFDD835',
       ),
       BookEntity(
+        id: 'book-3',
         title: 'Shatter Me',
         author: 'Tahereh Mafi',
         coverColor: '0xFF3B82F6',
       ),
       BookEntity(
+        id: 'book-4',
         title: 'Psychology of Money',
         author: 'Morgan Housel',
         coverColor: '0xFFE5E7EB',
       ),
       BookEntity(
+        id: 'book-5',
         title: 'Si Anak Badai',
         author: 'Terellye',
         coverColor: '0xFF1E3A8A',
       ),
       BookEntity(
+        id: 'book-6',
         title: 'Get Well Soon Heart',
         author: 'Deedain',
         coverColor: '0xFFFEE2E2',
       ),
       BookEntity(
+        id: 'book-7',
         title: 'Coraline',
         author: 'Neil Gaiman',
         coverColor: '0xFF6B21A8',
       ),
       BookEntity(
+        id: 'book-8',
         title: 'Summer To Remember',
         author: 'suzatthefirst',
         coverColor: '0xFF3B82F6',
