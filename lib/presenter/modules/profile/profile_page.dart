@@ -1,36 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../widgets/common/bottom_navigation.dart';
-import '../bookmarks/bookmarks_screen.dart';
+import '../../../shared/components/bottom_navigation/bottom_navigation_widget.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  int _currentIndex = 3; // Profile is at index 3
-
-  void _onNavigationTap(int index) {
-    if (index == 0) {
-      // Navigate back to home
-      Navigator.pop(context);
-    } else if (index == 1) {
-      // Navigate to search - would need to implement navigation
-      Navigator.pop(context);
-    } else if (index == 2) {
-      // Navigate to bookmarks screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const BookmarksScreen()),
-      );
-    } else {
-      setState(() {
-        _currentIndex = index;
-      });
-    }
-  }
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +12,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header with gradient background
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -73,7 +44,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  // Profile Avatar
                   Container(
                     width: 100,
                     height: 100,
@@ -113,7 +83,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  // Edit Profile Button
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
@@ -139,10 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-
             SizedBox(height: 20),
-
-            // Reading Statistics
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -203,10 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-
             SizedBox(height: 30),
-
-            // Account Settings
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -251,10 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-
             SizedBox(height: 30),
-
-            // Preferences
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -275,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     trailing: Switch(
                       value: false,
                       onChanged: (value) {},
-                      activeThumbColor: Color(0xFF5B4B8A),
+                      activeTrackColor: Color(0xFF5B4B8A),
                     ),
                     onTap: () {},
                   ),
@@ -285,17 +245,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     trailing: Switch(
                       value: true,
                       onChanged: (value) {},
-                      activeThumbColor: Color(0xFF5B4B8A),
+                      activeTrackColor: Color(0xFF5B4B8A),
                     ),
                     onTap: () {},
                   ),
                 ],
               ),
             ),
-
             SizedBox(height: 30),
-
-            // About & Support
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -335,10 +292,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-
             SizedBox(height: 30),
-
-            // Logout Button
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: SizedBox(
@@ -370,14 +324,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-
-            SizedBox(height: 100), // Space for bottom navigation
+            SizedBox(height: 100),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: _onNavigationTap,
+      bottomNavigationBar: BottomNavigationWidget(
+        currentIndex: 3,
       ),
     );
   }

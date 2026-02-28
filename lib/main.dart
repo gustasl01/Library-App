@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'screens/home/home_screen.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'core/app_module/app_module.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(ModularApp(module: AppModule(), child: const MainApp()));
 }
 
 class MainApp extends StatelessWidget {
@@ -10,15 +11,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Library App',
       theme: ThemeData(
-        primaryColor: Color(0xFF5B4B8A),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFF5B4B8A),
+          primary: Color(0xFF5B4B8A),
+        ),
         scaffoldBackgroundColor: Colors.grey[50],
         fontFamily: 'Roboto',
       ),
-      home: const HomeScreen(),
+      routerConfig: Modular.routerConfig,
     );
   }
 }
