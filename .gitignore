@@ -20,6 +20,7 @@ migrate_working_dir/
 
 # Supabase setup and documentation
 supabase_schema.sql
+supabase_update_book_images.sql
 supabase_schema_reset.sql
 supabase_queries.sql
 SUPABASE_SETUP.md

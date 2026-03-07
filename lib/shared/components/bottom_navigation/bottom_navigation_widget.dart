@@ -10,7 +10,7 @@ class BottomNavigationWidget extends StatelessWidget {
   });
 
   void _onTap(int index) {
-    final routes = ['/', '/search', '/bookmarks', '/profile'];
+    final routes = ['/home', '/search', '/bookmarks', '/profile'];
     if (currentIndex != index) {
       Modular.to.navigate(routes[index]);
     }

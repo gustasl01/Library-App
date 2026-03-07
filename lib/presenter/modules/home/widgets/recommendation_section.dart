@@ -1,33 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../domain/entities/book_entity.dart';
+import '../../../../infra/repositories/book_repository.dart';
+import '../../../../shared/components/book_cover/book_cover_widget.dart';
 
-class RecommendationSection extends StatelessWidget {
+class RecommendationSection extends StatefulWidget {
   const RecommendationSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<BookEntity> recommendations = [
-      BookEntity(
-        id: 'book-2',
-        title: 'Shine',
-        author: 'JESSICA JUNG',
-        coverColor: '0xFFFDD835',
-      ),
-      BookEntity(
-        id: 'book-3',
-        title: 'Shatter Me',
-        author: 'Author Name',
-        coverColor: '0xFF3B82F6',
-      ),
-      BookEntity(
-        id: 'book-4',
-        title: 'Psychology of Money',
-        author: 'MORGAN HOUSEL',
-        coverColor: '0xFFE5E7EB',
-      ),
-    ];
+  State<RecommendationSection> createState() => _RecommendationSectionState();
+}
 
+class _RecommendationSectionState extends State<RecommendationSection> {
+  final BookRepository _bookRepository = BookRepository();
+  late Future<List<BookEntity>> _recommendationsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _recommendationsFuture = _loadRecommendations();
+  }
+
+  Future<List<BookEntity>> _loadRecommendations() async {
+    try {
+      final books = await _bookRepository.getFeatured();
+      return books.take(6).toList();
+    } catch (_) {
+      return [
+        BookEntity(
+          id: 'book-2',
+          title: 'Shine',
+          author: 'JESSICA JUNG',
+          coverColor: '0xFFFDD835',
+        ),
+        BookEntity(
+          id: 'book-3',
+          title: 'Shatter Me',
+          author: 'Author Name',
+          coverColor: '0xFF3B82F6',
+        ),
+        BookEntity(
+          id: 'book-4',
+          title: 'Psychology of Money',
+          author: 'MORGAN HOUSEL',
+          coverColor: '0xFFE5E7EB',
+        ),
+      ];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
@@ -54,15 +77,35 @@ class RecommendationSection extends StatelessWidget {
             ],
           ),
           SizedBox(height: 16),
-          SizedBox(
-            height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: recommendations.length,
-              itemBuilder: (context, index) {
-                return _BookCard(book: recommendations[index]);
-              },
-            ),
+          FutureBuilder<List<BookEntity>>(
+            future: _recommendationsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SizedBox(
+                  height: 200,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              final recommendations = snapshot.data ?? [];
+              if (recommendations.isEmpty) {
+                return const SizedBox(
+                  height: 200,
+                  child: Center(child: Text('Nenhuma recomendacao encontrada')),
+                );
+              }
+
+              return SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: recommendations.length,
+                  itemBuilder: (context, index) {
+                    return _BookCard(book: recommendations[index]);
+                  },
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -87,26 +130,20 @@ class _BookCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            BookCoverWidget(
+              coverImage: book.coverImage,
+              coverColor: book.coverColor,
               width: 120,
               height: 160,
-              decoration: BoxDecoration(
-                color: Color(int.parse(book.coverColor)),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 8,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  '📚',
-                  style: TextStyle(fontSize: 50),
+              borderRadius: 12,
+              fallbackEmoji: '📚',
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
                 ),
-              ),
+              ],
             ),
             SizedBox(height: 8),
             Text(

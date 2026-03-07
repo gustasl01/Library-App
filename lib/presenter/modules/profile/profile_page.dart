@@ -1,11 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import '../../../core/services/auth_service.dart';
 import '../../../shared/components/bottom_navigation/bottom_navigation_widget.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  Future<void> _logout(BuildContext context) async {
+    try {
+      await AuthService().signOut();
+      if (!context.mounted) return;
+      Modular.to.navigate('/login');
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao sair: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final currentUser = AuthService().currentUser;
+    final userEmail = currentUser?.email ?? 'Sem e-mail';
+    final userName = (currentUser?.userMetadata?['full_name'] ??
+            currentUser?.userMetadata?['name'] ??
+            'User')
+        .toString();
+
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
@@ -67,7 +89,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Demo User',
+                    userName,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -76,7 +98,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'demo@library.com',
+                    userEmail,
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 14,
@@ -298,7 +320,7 @@ class ProfilePage extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () => _logout(context),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.red,
                     side: BorderSide(color: Colors.red),

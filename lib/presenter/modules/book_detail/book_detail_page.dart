@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../domain/entities/book_entity.dart';
+import '../../../shared/components/book_cover/book_cover_widget.dart';
 
 class BookDetailPage extends StatelessWidget {
   final BookEntity book;
@@ -40,33 +41,20 @@ class BookDetailPage extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  BookCoverWidget(
+                    coverImage: book.coverImage,
+                    coverColor: book.coverColor,
                     width: 140,
                     height: 200,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color(0xFF1E3A8A),
-                          Color(0xFF3B82F6),
-                        ],
+                    borderRadius: 12,
+                    fallbackEmoji: '📖',
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
                       ),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        '📖',
-                        style: TextStyle(fontSize: 60),
-                      ),
-                    ),
+                    ],
                   ),
                   SizedBox(width: 20),
                   Expanded(
