@@ -23,14 +23,16 @@ class _ContinueReadingSectionState extends State<ContinueReadingSection> {
 
   Future<BookEntity?> _loadContinueReadingBook() async {
     try {
-      final reading = await _bookRepository.getContinueReading();
+      final reading = await _bookRepository.getContinueReading()
+          .timeout(const Duration(seconds: 5));
       if (reading.isNotEmpty) return reading.first;
     } catch (_) {
       // Usuario pode nao estar autenticado.
     }
 
     try {
-      final featured = await _bookRepository.getFeatured();
+      final featured = await _bookRepository.getFeatured()
+          .timeout(const Duration(seconds: 5));
       if (featured.isNotEmpty) return featured.first;
     } catch (_) {
       // Fallback abaixo.
@@ -123,29 +125,33 @@ class _ContinueReadingCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          children: [
-            BookCoverWidget(
-              coverImage: book.coverImage,
-              coverColor: book.coverColor,
-              width: 80,
-              height: 120,
-              borderRadius: 8,
-              fallbackEmoji: '📖',
-            ),
-            SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    book.title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+        child: IntrinsicHeight(
+          child: Row(
+            children: [
+              BookCoverWidget(
+                coverImage: book.coverImage,
+                coverColor: book.coverColor,
+                width: 80,
+                height: 120,
+                borderRadius: 8,
+                fallbackEmoji: '📖',
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      book.title,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
                   SizedBox(height: 4),
                   Text(
                     'Chapter ${book.currentChapter ?? 1} of ${book.totalChapters ?? '-'}',
@@ -208,6 +214,7 @@ class _ContinueReadingCard extends StatelessWidget {
           ],
         ),
       ),
+      )
     );
   }
 }

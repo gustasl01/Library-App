@@ -23,7 +23,8 @@ class _RecommendationSectionState extends State<RecommendationSection> {
 
   Future<List<BookEntity>> _loadRecommendations() async {
     try {
-      final books = await _bookRepository.getFeatured();
+      final books = await _bookRepository.getFeatured()
+          .timeout(const Duration(seconds: 5));
       return books.take(6).toList();
     } catch (_) {
       return [
@@ -96,7 +97,7 @@ class _RecommendationSectionState extends State<RecommendationSection> {
               }
 
               return SizedBox(
-                height: 200,
+                height: 220,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: recommendations.length,
@@ -128,6 +129,7 @@ class _BookCard extends StatelessWidget {
         width: 120,
         margin: EdgeInsets.only(right: 16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BookCoverWidget(
@@ -156,6 +158,7 @@ class _BookCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
+            SizedBox(height: 2),
             Text(
               book.author,
               style: TextStyle(

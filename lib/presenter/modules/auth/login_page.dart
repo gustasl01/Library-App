@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/services/auth_service.dart';
 
@@ -21,24 +18,9 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isLoading = false;
   bool _obscure = true;
-  StreamSubscription<AuthState>? _authSub;
-
-  @override
-  void initState() {
-    super.initState();
-    _authSub = Supabase.instance.client.auth.onAuthStateChange.listen((event) async {
-      if (!mounted) return;
-      final session = event.session;
-      if (session == null) return;
-      await _authService.ensureUserProfile();
-      if (!mounted) return;
-      Modular.to.navigate('/home');
-    });
-  }
 
   @override
   void dispose() {
-    _authSub?.cancel();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -53,10 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
-      await _authService.ensureUserProfile();
-
-      if (!mounted) return;
-      Modular.to.navigate('/home');
+      // Sem navegação — o listener global no main.dart cuida disso
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -68,16 +47,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _loginWithGoogle() async {
+    if (_isLoading) return;
     setState(() => _isLoading = true);
     try {
       await _authService.signInWithGoogle();
-      // Em mobile/web o fluxo pode redirecionar externamente.
+      // Sem navegação — o listener global no main.dart cuida disso
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Falha no login com Google: $e')),
       );
-      setState(() => _isLoading = false);
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -127,19 +108,22 @@ class _LoginPageState extends State<LoginPage> {
                               color: const Color(0xFF5B4B8A),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Icon(Icons.menu_book_rounded, color: Colors.white),
+                            child: const Icon(Icons.menu_book_rounded,
+                                color: Colors.white),
                           ),
                           const SizedBox(width: 12),
                           const Text(
                             'Library App',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
                       const SizedBox(height: 20),
                       const Text(
                         'Entrar',
-                        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 32, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -167,7 +151,8 @@ class _LoginPageState extends State<LoginPage> {
                               validator: (v) {
                                 final value = (v ?? '').trim();
                                 if (value.isEmpty) return 'Informe seu e-mail';
-                                if (!value.contains('@')) return 'E-mail invalido';
+                                if (!value.contains('@'))
+                                  return 'E-mail invalido';
                                 return null;
                               },
                             ),
@@ -185,12 +170,16 @@ class _LoginPageState extends State<LoginPage> {
                                   borderSide: BorderSide.none,
                                 ),
                                 suffixIcon: IconButton(
-                                  onPressed: () => setState(() => _obscure = !_obscure),
-                                  icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+                                  onPressed: () => setState(
+                                      () => _obscure = !_obscure),
+                                  icon: Icon(_obscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
                                 ),
                               ),
                               validator: (v) {
-                                if ((v ?? '').isEmpty) return 'Informe sua senha';
+                                if ((v ?? '').isEmpty)
+                                  return 'Informe sua senha';
                                 return null;
                               },
                             ),
@@ -198,7 +187,8 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                onPressed: _isLoading ? null : _loginWithEmail,
+                                onPressed:
+                                    _isLoading ? null : _loginWithEmail,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF5B4B8A),
                                   foregroundColor: Colors.white,
@@ -206,13 +196,15 @@ class _LoginPageState extends State<LoginPage> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 14),
                                 ),
                                 child: _isLoading
                                     ? const SizedBox(
                                         height: 18,
                                         width: 18,
-                                        child: CircularProgressIndicator(strokeWidth: 2),
+                                        child: CircularProgressIndicator(
+                                            strokeWidth: 2),
                                       )
                                     : const Text('Fazer login'),
                               ),
@@ -225,8 +217,10 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Expanded(child: Divider(color: Colors.grey[300])),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text('OU', style: TextStyle(color: Colors.grey[600])),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text('OU',
+                                style: TextStyle(color: Colors.grey[600])),
                           ),
                           Expanded(child: Divider(color: Colors.grey[300])),
                         ],
@@ -240,7 +234,8 @@ class _LoginPageState extends State<LoginPage> {
                           label: const Text('Continuar com Google'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.black87,
-                            side: const BorderSide(color: Color(0xFFE5E7EB)),
+                            side: const BorderSide(
+                                color: Color(0xFFE5E7EB)),
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -255,7 +250,8 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           const Text('Nao tem conta?'),
                           TextButton(
-                            onPressed: () => Modular.to.pushNamed('/register'),
+                            onPressed: () =>
+                                Modular.to.pushNamed('/register'),
                             child: const Text('Criar conta'),
                           ),
                         ],

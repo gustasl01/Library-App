@@ -9,11 +9,31 @@ class AuthService {
 
   bool get isAuthenticated => currentUser != null;
 
+  // ✅ Expõe o stream de autenticação
+  Stream<Session?> get authStateChanges =>
+      _client.auth.onAuthStateChange.map((data) => data.session);
+
   Future<void> signInWithEmail({
     required String email,
     required String password,
   }) async {
-    await _client.auth.signInWithPassword(email: email, password: password);
+    try {
+      await _client.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+    } on AuthException catch (e) {
+      throw Exception('Erro de autenticação: ${e.message}');
+    } catch (e) {
+      // Captura erros de rede/handshake
+      if (e.toString().contains('HandshakeException')) {
+        throw Exception(
+          'Erro de conexão SSL. Verifique sua conexão com a internet e '
+          'se a URL do Supabase está correta.',
+        );
+      }
+      throw Exception('Erro ao fazer login: $e');
+    }
   }
 
   Future<void> signUpWithEmail({
@@ -28,7 +48,6 @@ class AuthService {
       throw Exception('Nao foi possivel criar o usuario.');
     }
 
-    // Garante perfil na tabela public.users, usada pelas policies.
     await _client.from('users').upsert({
       'id': user.id,
       'name': name,
@@ -47,11 +66,19 @@ class AuthService {
     final user = currentUser;
     if (user == null) return;
 
+    final existing = await _client
+        .from('users')
+        .select('id')
+        .eq('id', user.id)
+        .maybeSingle();
+
+    if (existing != null) return;
+
     final metadata = user.userMetadata ?? <String, dynamic>{};
     final fullName = (metadata['full_name'] ?? metadata['name'] ?? 'User').toString();
     final email = user.email ?? '';
 
-    await _client.from('users').upsert({
+    await _client.from('users').insert({
       'id': user.id,
       'name': fullName,
       'email': email,

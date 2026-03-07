@@ -21,6 +21,9 @@ class SupabaseConfig {
         url: url,
         anonKey: anonKey,
         debug: debugMode,
+        authOptions: const FlutterAuthClientOptions(
+          authFlowType: AuthFlowType.pkce,
+        ),
       );
     } catch (e) {
       throw Exception('Erro ao inicializar Supabase: $e');

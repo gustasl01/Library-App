@@ -1,13 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/app_module/app_module.dart';
 import 'core/config/supabase_config.dart';
+import 'core/services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
     await SupabaseConfig.initialize();
+
+    // Flag para ignorar o estado inicial e só reagir a mudanças
+    bool isInitialLoad = true;
+
+    // Listener global — persiste durante toda a vida do app
+    SupabaseConfig.client.auth.onAuthStateChange.listen((data) async {
+      final session = data.session;
+      final event = data.event;
+      
+      debugPrint('Auth event: $event, session: ${session != null}');
+
+      // Ignora o evento inicial (INITIAL_SESSION) para não conflitar com AuthGatePage
+      if (isInitialLoad) {
+        isInitialLoad = false;
+        debugPrint('Auth: Ignorando evento inicial');
+        return;
+      }
+
+      if (event == AuthChangeEvent.signedIn && session != null) {
+        debugPrint('Auth: Usuário logou, processando perfil e navegando');
+        await Future.delayed(const Duration(milliseconds: 300));
+        final authService = AuthService();
+        try {
+          await authService.ensureUserProfile();
+        } catch (e) {
+          debugPrint('ensureUserProfile error: $e');
+        }
+        Modular.to.navigate('/home');
+      } else if (event == AuthChangeEvent.signedOut) {
+        debugPrint('Auth: Usuário deslogou');
+        Modular.to.navigate('/login');
+      }
+    });
+
     runApp(ModularApp(module: AppModule(), child: const MainApp()));
   } catch (e) {
     // Se falhar ao inicializar, exibir erro

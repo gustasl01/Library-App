@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../core/services/auth_service.dart';
+import '../../../core/config/supabase_config.dart';
 
 class AuthGatePage extends StatefulWidget {
   const AuthGatePage({super.key});
@@ -11,29 +11,24 @@ class AuthGatePage extends StatefulWidget {
 }
 
 class _AuthGatePageState extends State<AuthGatePage> {
-  final _authService = AuthService();
-
   @override
   void initState() {
     super.initState();
-    _routeUser();
-  }
-
-  Future<void> _routeUser() async {
-    if (_authService.isAuthenticated) {
-      await _authService.ensureUserProfile();
+    // Espera o primeiro frame ser renderizado antes de navegar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      Modular.to.navigate('/home');
-      return;
-    }
-
-    if (!mounted) return;
-    Modular.to.navigate('/login');
+      if (SupabaseConfig.isAuthenticated) {
+        Modular.to.navigate('/home');
+      } else {
+        Modular.to.navigate('/login');
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: CircularProgressIndicator(),
       ),
