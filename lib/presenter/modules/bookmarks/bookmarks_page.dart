@@ -5,6 +5,7 @@ import '../../../domain/entities/book_entity.dart';
 import '../../../infra/repositories/book_repository.dart';
 import '../../../shared/components/book_cover/book_cover_widget.dart';
 import '../../../shared/components/bottom_navigation/bottom_navigation_widget.dart';
+import '../../../shared/components/shimmer/shimmer_loading.dart';
 
 class BookmarksPage extends StatefulWidget {
   const BookmarksPage({super.key});
@@ -55,7 +56,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             backgroundColor: Colors.grey[50],
-            body: const Center(child: CircularProgressIndicator()),
+            body: const SafeArea(child: BookmarksShimmer()),
             bottomNavigationBar: BottomNavigationWidget(currentIndex: 2),
           );
         }

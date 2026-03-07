@@ -151,8 +151,9 @@ class _LoginPageState extends State<LoginPage> {
                               validator: (v) {
                                 final value = (v ?? '').trim();
                                 if (value.isEmpty) return 'Informe seu e-mail';
-                                if (!value.contains('@'))
+                                if (!value.contains('@')) {
                                   return 'E-mail invalido';
+                                }
                                 return null;
                               },
                             ),
@@ -178,8 +179,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               validator: (v) {
-                                if ((v ?? '').isEmpty)
+                                if ((v ?? '').isEmpty) {
                                   return 'Informe sua senha';
+                                }
                                 return null;
                               },
                             ),

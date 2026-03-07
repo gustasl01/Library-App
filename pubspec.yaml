@@ -12,6 +12,8 @@ dependencies:
   flutter_modular: ^6.3.4
   supabase_flutter: ^2.5.0
   flutter_dotenv: ^5.1.0
+  google_fonts: ^6.2.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

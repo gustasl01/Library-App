@@ -21,17 +21,42 @@ class AppModule extends Module {
       child: (context) => const AuthGatePage(),
       transition: TransitionType.fadeIn,
     );
-    r.child('/login', child: (context) => const LoginPage());
-    r.child('/register', child: (context) => const RegisterPage());
-    r.child('/home', child: (context) => const HomePage());
-    r.child('/search', child: (context) => const SearchPage());
-    r.child('/bookmarks', child: (context) => const BookmarksPage());
-    r.child('/profile', child: (context) => const ProfilePage());
+    r.child(
+      '/login',
+      child: (context) => const LoginPage(),
+      transition: TransitionType.fadeIn,
+    );
+    r.child(
+      '/register',
+      child: (context) => const RegisterPage(),
+      transition: TransitionType.rightToLeft,
+    );
+    r.child(
+      '/home',
+      child: (context) => const HomePage(),
+      transition: TransitionType.fadeIn,
+    );
+    r.child(
+      '/search',
+      child: (context) => const SearchPage(),
+      transition: TransitionType.fadeIn,
+    );
+    r.child(
+      '/bookmarks',
+      child: (context) => const BookmarksPage(),
+      transition: TransitionType.fadeIn,
+    );
+    r.child(
+      '/profile',
+      child: (context) => const ProfilePage(),
+      transition: TransitionType.fadeIn,
+    );
     r.child(
       '/book-detail',
       child: (context) => BookDetailPage(
         book: r.args.data as BookEntity,
       ),
+      transition: TransitionType.rightToLeft,
     );
   }
 }

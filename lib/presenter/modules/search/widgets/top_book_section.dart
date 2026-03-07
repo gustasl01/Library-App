@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../domain/entities/book_entity.dart';
 import '../../../../infra/repositories/book_repository.dart';
 import '../../../../shared/components/book_cover/book_cover_widget.dart';
+import '../../../../shared/components/shimmer/shimmer_loading.dart';
 
 class TopBookSection extends StatefulWidget {
   const TopBookSection({super.key});
@@ -86,10 +87,7 @@ class _TopBookSectionState extends State<TopBookSection> {
             future: _booksFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SizedBox(
-                  height: 180,
-                  child: Center(child: CircularProgressIndicator()),
-                );
+                return const TopBookShimmer();
               }
 
               final books = snapshot.data ?? [];

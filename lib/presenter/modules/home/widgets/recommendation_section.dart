@@ -3,15 +3,16 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../domain/entities/book_entity.dart';
 import '../../../../infra/repositories/book_repository.dart';
 import '../../../../shared/components/book_cover/book_cover_widget.dart';
+import '../../../../shared/components/shimmer/shimmer_loading.dart';
 
 class RecommendationSection extends StatefulWidget {
   const RecommendationSection({super.key});
 
   @override
-  State<RecommendationSection> createState() => _RecommendationSectionState();
+  State<RecommendationSection> createState() => RecommendationSectionState();
 }
 
-class _RecommendationSectionState extends State<RecommendationSection> {
+class RecommendationSectionState extends State<RecommendationSection> {
   final BookRepository _bookRepository = BookRepository();
   late Future<List<BookEntity>> _recommendationsFuture;
 
@@ -19,6 +20,12 @@ class _RecommendationSectionState extends State<RecommendationSection> {
   void initState() {
     super.initState();
     _recommendationsFuture = _loadRecommendations();
+  }
+
+  void refresh() {
+    setState(() {
+      _recommendationsFuture = _loadRecommendations();
+    });
   }
 
   Future<List<BookEntity>> _loadRecommendations() async {
@@ -82,10 +89,7 @@ class _RecommendationSectionState extends State<RecommendationSection> {
             future: _recommendationsFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SizedBox(
-                  height: 200,
-                  child: Center(child: CircularProgressIndicator()),
-                );
+                return const RecommendationShimmer();
               }
 
               final recommendations = snapshot.data ?? [];

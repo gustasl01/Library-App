@@ -3,15 +3,16 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../domain/entities/book_entity.dart';
 import '../../../../infra/repositories/book_repository.dart';
 import '../../../../shared/components/book_cover/book_cover_widget.dart';
+import '../../../../shared/components/shimmer/shimmer_loading.dart';
 
 class ContinueReadingSection extends StatefulWidget {
   const ContinueReadingSection({super.key});
 
   @override
-  State<ContinueReadingSection> createState() => _ContinueReadingSectionState();
+  State<ContinueReadingSection> createState() => ContinueReadingSectionState();
 }
 
-class _ContinueReadingSectionState extends State<ContinueReadingSection> {
+class ContinueReadingSectionState extends State<ContinueReadingSection> {
   final BookRepository _bookRepository = BookRepository();
   late Future<BookEntity?> _bookFuture;
 
@@ -19,6 +20,12 @@ class _ContinueReadingSectionState extends State<ContinueReadingSection> {
   void initState() {
     super.initState();
     _bookFuture = _loadContinueReadingBook();
+  }
+
+  void refresh() {
+    setState(() {
+      _bookFuture = _loadContinueReadingBook();
+    });
   }
 
   Future<BookEntity?> _loadContinueReadingBook() async {
@@ -81,10 +88,7 @@ class _ContinueReadingSectionState extends State<ContinueReadingSection> {
             future: _bookFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SizedBox(
-                  height: 140,
-                  child: Center(child: CircularProgressIndicator()),
-                );
+                return const ContinueReadingShimmer();
               }
 
               final book = snapshot.data;

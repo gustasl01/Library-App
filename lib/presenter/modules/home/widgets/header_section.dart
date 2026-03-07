@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import '../../../../core/services/auth_service.dart';
 
 class HeaderSection extends StatelessWidget {
-  final String userName;
+  final AuthService _authService = AuthService();
 
-  const HeaderSection({
-    super.key,
-    required this.userName,
-  });
+  HeaderSection({super.key});
+
+  String get _userName {
+    final user = _authService.currentUser;
+    if (user == null) return 'Guest';
+    
+    final metadata = user.userMetadata ?? {};
+    final name = metadata['full_name'] ?? metadata['name'] ?? user.email?.split('@').first ?? 'User';
+    
+    // Pega apenas o primeiro nome
+    return name.toString().split(' ').first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +37,14 @@ class HeaderSection extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Hello, $userName',
+                'Hello, $_userName',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(width: 8),
               Text(
                 '👋',
                 style: TextStyle(fontSize: 24),
