@@ -1,3 +1,37 @@
+# This file itself
+.gitignore
+
+# Claude Code configuration
+.claude/
+CLAUDE.md
+
+# Environment variables / secrets
+.env
+.env.local
+.env.*.local
+.env.example
+*.env
+
+# Supabase local files
+supabase_schema.sql
+supabase_update_book_images.sql
+supabase_schema_reset.sql
+supabase_queries.sql
+SUPABASE_SETUP.md
+INTEGRATION_GUIDE.md
+supabase/.temp/
+supabase/config.toml
+
+# Firebase / Google Services (credenciais nativas)
+google-services.json
+GoogleService-Info.plist
+
+# Keystore / signing (chaves de release Android)
+*.jks
+*.keystore
+key.properties
+/android/key.properties
+
 # Miscellaneous
 *.class
 *.log
@@ -12,48 +46,33 @@
 .swiftpm/
 migrate_working_dir/
 
-# Environment variables
-.env
-.env.local
-.env.*.local
-.env.example
-
-# Supabase setup and documentation
-supabase_schema.sql
-supabase_update_book_images.sql
-supabase_schema_reset.sql
-supabase_queries.sql
-SUPABASE_SETUP.md
-INTEGRATION_GUIDE.md
-
-# IntelliJ related
+# IntelliJ / Android Studio
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# VS Code
+.vscode/
 
-# Flutter/Dart/Pub related
+# Flutter/Dart/Pub
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
 /build/
 /coverage/
 
-# Symbolication related
+# Symbolication
 app.*.symbols
 
-# Obfuscation related
+# Obfuscation
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android build artifacts
 /android/app/debug
 /android/app/profile
 /android/app/release
