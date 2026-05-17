@@ -50,7 +50,7 @@ O app conta com catálogo de 20 livros clássicos, leitor imersivo com controle 
 
 | Feature | Descrição |
 |---|---|
-| 🔐 **Autenticação** | Login por e-mail/senha ou Google, registro com validação, rotas protegidas |
+| 🔐 **Autenticação** | Login por e-mail/senha ou Google, mas apenas demonstração |
 | 🏠 **Home** | Destaque, continue lendo com progresso, recomendações por avaliação |
 | 🔍 **Busca** | Pesquisa por título/autor, filtros por tag, top autores |
 | 📖 **Leitor** | Modo imersivo, 3 temas (claro/sépia/escuro), controle de fonte, progresso |
