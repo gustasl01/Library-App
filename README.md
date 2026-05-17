@@ -15,8 +15,6 @@
 
 ## Screenshots
 
-> **Para adicionar as screenshots:** crie a pasta `screenshots/` na raiz do projeto e salve as imagens como `book_detail.png`, `search.png` e `profile.png`.
-
 <div align="center">
 
 <table>
