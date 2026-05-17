@@ -210,6 +210,6 @@ sl.registerLazySingleton<BookRemoteDatasource>(
 
 Desenvolvido por **Gustavo Santos**
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Gustavo%20Santos-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/gustavo-santos)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Gustavo%20Santos-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/gusta-santos/)
 
 </div>
